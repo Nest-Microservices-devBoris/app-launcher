@@ -27,10 +27,14 @@
 1. Clone the repository
 2. Navigate to the project directory
 3. Create a `.env` file with the `env.template` file
-4. Run the following command to start the application:
+4. Run the following command to construct the submodules
+```bash
+git submodule update --init --recursive
+```
+5. Run the following command to start the application:
 
 ```bash
-docker compose up -d
+docker compose up --build
 ```
 
 
