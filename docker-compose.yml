@@ -81,5 +81,6 @@ services:
       - PORT=${AUTH_MS_PORT}
       - NATS_SERVER=nats://nats-server:4222
       - DATABASE_URL=${AUTH_MS_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
 
       
