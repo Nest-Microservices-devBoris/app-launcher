@@ -12,7 +12,7 @@ services:
     build:
       context: ./client-gateway
       dockerfile: dockerfile.prod
-    image: client-gateway-prod
+    image: southamerica-east1-docker.pkg.dev/e-commerce-nest-microservice/image-registry/client-gateway
     ports:
       - "${CLIENT_GATEWAY_PORT}:${CLIENT_GATEWAY_PORT}"
     environment:
@@ -23,7 +23,7 @@ services:
     build:
       context: ./auth-ms
       dockerfile: dockerfile.prod
-    image: auth-ms-prod
+    image: southamerica-east1-docker.pkg.dev/e-commerce-nest-microservice/image-registry/auth-ms
     environment:
       - PORT=${AUTH_MS_PORT}
       - NATS_SERVER=nats://nats-server:4222
@@ -35,7 +35,7 @@ services:
     build:
       context: ./products-ms
       dockerfile: dockerfile.prod
-    image: products-ms-prod
+    image: southamerica-east1-docker.pkg.dev/e-commerce-nest-microservice/image-registry/products-ms
     ports:
       - "${PRODUCTS_MS_PORT}:${PRODUCTS_MS_PORT}"
 
@@ -44,16 +44,17 @@ services:
       - NATS_SERVER=nats://nats-server:4222
       - DATABASE_URL=file:./dev.db
     
-  # orders-ms:
-  #   depends_on:
-  #     - orders-db
-  #   build:
-  #     context: ./orders-ms
-  #     dockerfile: dockerfile.prod
-  #   environment:
-  #     - PORT=3002
-  #     - NATS_SERVER=nats://nats-server:4222
-  #     - DATABASE_URL=postgres://postgres:postgres123@orders-db:5432/ordersdb?schema=public
+  orders-ms:
+    build:
+      context: ./orders-ms
+      dockerfile: dockerfile.prod
+      args:
+        - ORDERS_DATABASE_URL=${ORDERS_DATABASE_URL}
+    image: southamerica-east1-docker.pkg.dev/e-commerce-nest-microservice/image-registry/orders-ms
+    environment:
+      - PORT=${ORDERS_MS_PORT}
+      - NATS_SERVER=nats://nats-server:4222
+      - DATABASE_URL=${ORDERS_DATABASE_URL}
 
 
 
@@ -61,7 +62,7 @@ services:
     build:
       context: ./payment-ms
       dockerfile: dockerfile.prod
-    image: payment-ms-prod
+    image: southamerica-east1-docker.pkg.dev/e-commerce-nest-microservice/image-registry/payment-ms
     ports:
       - ${PAYMENT_MS_PORT}:${PAYMENT_MS_PORT}
     environment:
